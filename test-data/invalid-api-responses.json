@@ -1,0 +1,12 @@
+[
+  {
+    "scenario": "all fields invalid",
+    "payload": { "id": "101", "name": " ", "email": "invalid", "roles": [] },
+    "expectedErrorCount": 4
+  },
+  {
+    "scenario": "roles missing",
+    "payload": { "id": 101, "name": "Test", "email": "test@example.com" },
+    "expectedErrorCount": 1
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "gender": "Male",
+  "dateOfBirth": {
+    "day": "1",
+    "month": "July",
+    "year": "1998"
+  },
+  "subjects": ["Computer Science"],
+  "hobbies": ["Sports", "Reading", "Music"],
+  "picturePath": "fixtures/sample-upload.txt",
+  "state": "Rajasthan",
+  "city": "Jaipur"
+}
