@@ -1,24 +1,40 @@
-import type { Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 
-export type CalendarDate = {
-  day: string;
+export interface CalendarDate {
+  day: number;
   month: string;
-  year: string;
-};
+  year: number;
+}
 
-/** Selects a date from the DemoQA date picker using its semantic comboboxes. */
-export async function selectCalendarDate(page: Page, date: CalendarDate): Promise<void> {
+export async function selectCalendarDate(
+  page: Page,
+  date: CalendarDate
+): Promise<void> {
   try {
     const datePicker = page.locator('.react-datepicker');
-    const calendarSelectors = datePicker.getByRole('combobox');
 
-    await calendarSelectors.nth(1).selectOption(date.year);
-    await calendarSelectors.first().selectOption({ label: date.month });
+    // Select the required year.
     await datePicker
-      .getByRole('gridcell', { name: new RegExp(`${date.month} ${Number(date.day)}`) })
-      .click();
+      .locator('.react-datepicker__year-select')
+      .selectOption(String(date.year));
+
+    // Select the required month.
+    await datePicker
+      .locator('.react-datepicker__month-select')
+      .selectOption({ label: date.month });
+
+    // DemoQA uses three-digit day classes:
+    // 1 -> 001, 5 -> 005, 15 -> 015.
+    const formattedDay = String(date.day).padStart(3, '0');
+
+    const requiredDate = datePicker.locator(
+      `.react-datepicker__day--${formattedDay}:not(.react-datepicker__day--outside-month)`
+    );
+
+    await requiredDate.click();
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
+
     throw new Error(
       `Unable to select calendar date ${date.day}-${date.month}-${date.year}: ${reason}`,
       { cause: error }

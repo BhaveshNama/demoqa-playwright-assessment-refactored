@@ -40,7 +40,7 @@ export class StudentRegistrationPage {
     this.currentAddressInput = page.getByRole('textbox', { name: 'Current Address' });
     this.stateInput = page.locator('#react-select-3-input');
     this.cityInput = page.locator('#react-select-4-input');
-    this.pictureInput = page.getByLabel('Select picture');
+    this.pictureInput = page.locator('#uploadPicture');
     this.submitButton = page.getByRole('button', { name: 'Submit' });
     this.confirmationDialog = page.getByRole('dialog');
   }
@@ -76,7 +76,9 @@ export class StudentRegistrationPage {
       await this.page.getByRole('checkbox', { name: hobby, exact: true }).check();
     }
 
-    await this.pictureInput.setInputFiles(data.picturePath);
+    if (data.picturePath) {
+      await this.pictureInput.setInputFiles(data.picturePath);
+    }
     await this.currentAddressInput.fill(data.currentAddress);
     await this.selectStateAndCity(data.state, data.city);
   }

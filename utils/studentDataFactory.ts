@@ -1,6 +1,13 @@
 import { faker } from '@faker-js/faker';
 import type { StudentRegistrationData } from '../pages/StudentRegistrationPage';
 import { readJsonTestData, resolveProjectPath } from './dataHelper';
+import path from 'path';
+
+const picturePath = path.resolve(
+  process.cwd(),
+  'fixtures',
+  'sample-upload.txt'
+);
 
 type ValidStudentTemplate = Pick<
   StudentRegistrationData,
